@@ -70,9 +70,9 @@ app.post("/api/vote", (req, res) => {
     votes
   });
   saveVotes(all);
-
   res.json({ ok: true });
 });
+
 
 // Логин владельца
 app.post("/api/admin/login", (req, res) => {
@@ -93,6 +93,7 @@ app.post("/api/admin/login", (req, res) => {
 });
 
 // Выход
+// Выход
 app.post("/api/admin/logout", (req, res) => {
   const token = req.cookies?.admin_session;
   if (token) sessions.delete(hashToken(token));
@@ -100,6 +101,7 @@ app.post("/api/admin/logout", (req, res) => {
   res.json({ ok: true });
 });
 
+// Результаты (только владелец)
 // Результаты (только владелец)
 app.get("/api/admin/results", requireAdmin, (req, res) => {
   const all = loadVotes();
