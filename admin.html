@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>School Slay 2026 — Админка</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;600;800&display=swap');
+
+  :root{
+    --bg:#050507;
+    --bg2:#0b0b10;
+    --cardA: rgba(18,18,22,.78);
+    --cardB: rgba(10,10,14,.72);
+    --text:#F6F2EA;
+    --muted:#B9B2A6;
+    --accent:#FF6A00;
+    --accent2:#FFB000;
+    --stroke: rgba(255,255,255,.10);
+    --shadow: 0 22px 90px rgba(0,0,0,.65);
+    --radius: 22px;
+    --max: 1100px;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    color:var(--text);
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    background:
+      radial-gradient(900px 540px at 18% -10%, rgba(255,106,0,.22), transparent 60%),
+      radial-gradient(1100px 700px at 90% 15%, rgba(255,176,0,.10), transparent 62%),
+      linear-gradient(180deg, var(--bg), var(--bg2));
+    overflow-x:hidden;
+  }
+
+  .wrap{ max-width:var(--max); margin:0 auto; padding:24px 16px 40px; }
+  header{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    gap:14px; flex-wrap:wrap; margin-bottom:14px;
+  }
+  .brand{ display:flex; gap:14px; align-items:flex-start; }
+  .logo{
+    width:46px; height:46px; border-radius:14px;
+    background:
+      radial-gradient(16px 16px at 28% 28%, rgba(255,255,255,.28), transparent 65%),
+      linear-gradient(135deg, var(--accent), var(--accent2));
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow: 0 0 26px rgba(255,106,0,.28);
+  }
+  .title h1{
+    margin:0;
+    font-family: Unbounded, Inter, system-ui;
+    font-size:18px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .title p{ margin:6px 0 0; color:var(--muted); font-size:13px; line-height:1.35; }
+
+  .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+  .card{
+    background: linear-gradient(180deg, var(--cardA), var(--cardB));
+    border:1px solid var(--stroke);
+    border-radius:var(--radius);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+    backdrop-filter: blur(12px);
+  }
+
+  .cardHead{
+    padding:16px 18px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+  .kicker{
+    color: rgba(255,176,0,.85);
+    font-family: Unbounded, Inter, system-ui;
+    font-weight:800;
+    font-size:12px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+  }
+  .h2{
+    margin:6px 0 0 0;
+    font-family: Unbounded, Inter, system-ui;
+    font-size:16px;
+    letter-spacing:.3px;
+  }
+
+  .content{ padding:16px 18px 18px; }
+  .muted{ color:var(--muted); }
+
+  input{
+    padding:11px 12px;
+    border-radius:16px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.22);
+    color:var(--text);
+    outline:none;
+    min-width: 220px;
+  }
+
+  button{
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.20);
+    color:var(--text);
+    padding:11px 14px;
+    border-radius:16px;
+    cursor:pointer;
+    transition: transform .08s ease, background .2s ease, border .2s ease, box-shadow .2s ease;
+    font-weight:900;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    font-family: Unbounded, Inter, system-ui;
+    font-size:12px;
+    user-select:none;
+  }
+  button:hover{
+    border-color: rgba(255,106,0,.35);
+    box-shadow: 0 16px 55px rgba(0,0,0,.45);
+  }
+  button:active{ transform: translateY(1px); }
+  button.primary{
+    background:
+      radial-gradient(18px 18px at 24% 24%, rgba(255,255,255,.24), transparent 65%),
+      linear-gradient(135deg, var(--accent), var(--accent2));
+    border-color: transparent;
+    color:#120b06;
+    box-shadow: 0 0 26px rgba(255,106,0,.28);
+  }
+  button.secondary{
+    background: rgba(255,255,255,.06);
+    border-color: rgba(255,255,255,.14);
+  }
+
+  .metaBar{
+    display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    padding:12px 14px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.18);
+    border-radius:18px;
+    margin-bottom:14px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:12px;
+  }
+  @media (max-width:900px){ .grid{ grid-template-columns: 1fr; } }
+
+  .cat{
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.18);
+    border-radius:18px;
+    overflow:hidden;
+  }
+  .catHead{
+    padding:12px 14px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    display:flex; justify-content:space-between; align-items:flex-start; gap:10px;
+  }
+  .catTitle{
+    font-family: Unbounded, Inter, system-ui;
+    font-size:14px;
+    letter-spacing:.2px;
+    margin:0;
+    line-height:1.25;
+  }
+  .badge{
+    padding:7px 10px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.20);
+    color: rgba(246,242,234,.92);
+    font-family: Unbounded, Inter, system-ui;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    white-space:nowrap;
+  }
+  .winner{
+    padding:12px 14px;
+    display:flex; justify-content:space-between; gap:10px; align-items:center;
+  }
+  .winnerName{
+    font-weight:900;
+    font-size:14px;
+  }
+  .winnerVotes{
+    color: rgba(255,176,0,.90);
+    font-family: Unbounded, Inter, system-ui;
+    font-weight:800;
+    font-size:12px;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+  }
+  td{
+    padding:10px 14px;
+    border-top:1px solid rgba(255,255,255,.06);
+    vertical-align:top;
+  }
+  td.place{
+    width:56px;
+    color: rgba(255,176,0,.85);
+    font-family: Unbounded, Inter, system-ui;
+    font-weight:800;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+  }
+  td.v{
+    width:88px;
+    text-align:right;
+    color: rgba(246,242,234,.92);
+    font-family: Unbounded, Inter, system-ui;
+    font-weight:800;
+    letter-spacing:.4px;
+  }
+
+  .small{ font-size:12px; color:var(--muted); }
+  .err{ color:#ff9aa8; margin-top:10px; }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo"></div>
+      <div class="title">
+        <h1>School Slay 2026 — Admin</h1>
+        <p>Победитель + топ-3 по каждой номинации. Результаты видны только владельцу.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="secondary" id="refreshBtn" style="display:none">Обновить</button>
+      <button class="secondary" id="logoutBtn" style="display:none">Выйти</button>
+    </div>
+  </header>
+
+  <!-- LOGIN -->
+  <section class="card" id="loginCard">
+    <div class="cardHead">
+      <div>
+        <div class="kicker">Вход</div>
+        <div class="h2">Владелец</div>
+      </div>
+    </div>
+    <div class="content">
+      <div class="row">
+        <input id="u" placeholder="логин" autocomplete="username">
+        <input id="p" placeholder="пароль" type="password" autocomplete="current-password">
+        <button class="primary" id="loginBtn">Войти</button>
+      </div>
+      <div id="loginErr" class="err"></div>
+      <div class="small" style="margin-top:10px">Подсказка: пароль тот, который ты задал через переменные окружения.</div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="card" id="resultsCard" style="display:none; margin-top:14px;">
+    <div class="cardHead">
+      <div>
+        <div class="kicker">Результаты</div>
+        <div class="h2">Таблица лидеров</div>
+      </div>
+      <div class="row">
+        <span class="badge" id="totalBadge">Голосов: 0</span>
+        <span class="badge" id="catsBadge">Номинаций: 0</span>
+      </div>
+    </div>
+    <div class="content">
+      <div class="metaBar">
+        <div class="row">
+          <span class="badge" id="updatedBadge">Обновлено: —</span>
+        </div>
+        <div class="row">
+          <span class="small">Если кто-то проголосовал — нажми «Обновить».</span>
+        </div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  function fmtTime(d){
+    const pad = (n) => String(n).padStart(2,"0");
+    return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+
+  function topN(mapObj, n=3){
+    const arr = Object.entries(mapObj || {}).map(([name, votes]) => ({ name, votes: Number(votes)||0 }));
+    arr.sort((a,b) => b.votes - a.votes || a.name.localeCompare(b.name, "ru"));
+    return arr.slice(0, n);
+  }
+
+  function escapeHtml(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function renderResults(results, totalBallots){
+    const categories = Object.keys(results || {});
+    $("totalBadge").textContent = `Голосов: ${totalBallots}`;
+    $("catsBadge").textContent = `Номинаций: ${categories.length}`;
+    $("updatedBadge").textContent = `Обновлено: ${fmtTime(new Date())}`;
+
+    const grid = $("grid");
+    grid.innerHTML = "";
+
+    categories.sort((a,b)=> a.localeCompare(b,"ru"));
+
+    for(const cat of categories){
+      const top = topN(results[cat], 3);
+      const winner = top[0] || { name:"—", votes:0 };
+
+      const el = document.createElement("div");
+      el.className = "cat";
+      el.innerHTML = `
+        <div class="catHead">
+          <p class="catTitle">${escapeHtml(cat)}</p>
+          <span class="badge">топ-3</span>
+        </div>
+
+        <div class="winner">
+          <div>
+            <div class="small">Победитель</div>
+            <div class="winnerName">${escapeHtml(winner.name)}</div>
+          </div>
+          <div class="winnerVotes">${winner.votes} голос(ов)</div>
+        </div>
+
+        <table>
+          <tbody>
+            ${top.map((x, idx) => `
+              <tr>
+                <td class="place">#${idx+1}</td>
+                <td>${escapeHtml(x.name)}</td>
+                <td class="v">${x.votes}</td>
+              </tr>
+            `).join("")}
+            ${top.length === 0 ? `
+              <tr>
+                <td class="place">—</td>
+                <td class="muted">Пока нет голосов</td>
+                <td class="v">0</td>
+              </tr>` : ""}
+          </tbody>
+        </table>
+      `;
+      grid.appendChild(el);
+    }
+  }
+
+  async function loadResults(){
+    const res = await fetch("/api/admin/results", { cache: "no-store" });
+    if(!res.ok) throw new Error("Нет доступа");
+    const data = await res.json();
+    renderResults(data.results, data.total_ballots);
+  }
+
+  async function login(){
+    $("loginErr").textContent = "";
+    const username = $("u").value.trim();
+    const password = $("p").value.trim();
+
+    const res = await fetch("/api/admin/login", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ username, password })
+    });
+
+    if(!res.ok){
+      $("loginErr").textContent = "Неверный логин или пароль";
+      return;
+    }
+
+    $("loginCard").style.display = "none";
+    $("resultsCard").style.display = "block";
+    $("refreshBtn").style.display = "";
+    $("logoutBtn").style.display = "";
+
+    await loadResults();
+  }
+
+  async function logout(){
+    await fetch("/api/admin/logout", { method:"POST" });
+    location.reload();
+  }
+
+  $("loginBtn").onclick = login;
+  $("refreshBtn").onclick = async () => {
+    try { await loadResults(); }
+    catch { alert("Нет доступа. Перезайди."); }
+  };
+  $("logoutBtn").onclick = logout;
+
+  // авто-проверка: если уже залогинен — сразу показываем таблицу
+  (async ()=>{
+    try{
+      await loadResults();
+      $("loginCard").style.display = "none";
+      $("resultsCard").style.display = "block";
+      $("refreshBtn").style.display = "";
+      $("logoutBtn").style.display = "";
+    }catch(e){
+      // не залогинен — остаёмся на логине
+    }
+  })();
+</script>
+</body>
+</html>

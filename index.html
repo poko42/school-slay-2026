@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>School Slay 2026</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Inter:wght@400;600;800&display=swap');
+
+    :root{
+      --max: 980px;
+      --radius: 24px;
+
+      --bg:#050507;
+      --bg2:#0b0b10;
+
+      --cardA: rgba(18,18,22,.78);
+      --cardB: rgba(10,10,14,.72);
+
+      --text:#F6F2EA;
+      --muted:#B9B2A6;
+
+      --accent:#FF6A00;
+      --accent2:#FFB000;
+      --accentInk:#120b06;
+
+      --stroke: rgba(255,255,255,.10);
+      --strokeStrong: rgba(255,255,255,.16);
+
+      --shadow: 0 22px 90px rgba(0,0,0,.65);
+      --glow: 0 0 26px rgba(255,106,0,.28);
+      --lineGlow: rgba(255,176,0,.65);
+      --lineGlow2: rgba(255,106,0,.55);
+    }
+
+    [data-theme="gold"]{
+      --bg:#050506;
+      --bg2:#0a0a0d;
+      --cardA: rgba(16,16,18,.80);
+      --cardB: rgba(9,9,10,.70);
+      --text:#F7F2E8;
+      --muted:#BFB7A8;
+      --accent:#D6B15B;
+      --accent2:#F3DCA3;
+      --accentInk:#110f0a;
+      --shadow: 0 26px 110px rgba(0,0,0,.72);
+      --glow: 0 0 26px rgba(214,177,91,.22);
+      --lineGlow: rgba(243,220,163,.62);
+      --lineGlow2: rgba(214,177,91,.52);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:
+        radial-gradient(900px 540px at 18% -10%, rgba(255,106,0,.22), transparent 60%),
+        radial-gradient(1100px 700px at 90% 15%, rgba(255,176,0,.10), transparent 62%),
+        radial-gradient(900px 720px at 30% 110%, rgba(255,106,0,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E");
+      opacity:.10;
+      mix-blend-mode: overlay;
+    }
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:26px 16px 44px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:16px;
+    }
+
+    .brand{ display:flex; gap:14px; align-items:flex-start; }
+
+    .logo{
+      width:46px; height:46px; border-radius:14px;
+      background:
+        radial-gradient(16px 16px at 28% 28%, rgba(255,255,255,.28), transparent 65%),
+        linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: var(--glow);
+      border:1px solid rgba(255,255,255,.12);
+    }
+
+    .title h1{
+      margin:0;
+      font-family: Unbounded, Inter, system-ui;
+      font-size:18px;
+      letter-spacing:1px;
+      text-transform:uppercase;
+    }
+
+    .title p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+      max-width:560px;
+    }
+
+    .topRight{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .pill{
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.30);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:260px;
+      justify-content:space-between;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 14px 50px rgba(0,0,0,.35);
+    }
+
+    #progressText{
+      font-family: Unbounded, Inter, system-ui;
+      font-weight:800;
+      letter-spacing:.8px;
+      color: rgba(246,242,234,.92);
+    }
+
+    .bar{
+      flex:1;
+      height:9px;
+      border-radius:999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      margin-left:10px;
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width .35s ease;
+      box-shadow: var(--glow);
+    }
+
+    .chip{
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.22);
+      color: rgba(246,242,234,.92);
+      padding:10px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:900;
+      letter-spacing:.4px;
+      text-transform:uppercase;
+      font-size:12px;
+      font-family: Unbounded, Inter, system-ui;
+      transition: transform .08s ease, border .2s ease, box-shadow .2s ease;
+      user-select:none;
+    }
+    .chip:hover{
+      border-color: rgba(255,106,0,.35);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    }
+    .chip:active{ transform: translateY(1px); }
+
+    .card{
+      background: linear-gradient(180deg, var(--cardA), var(--cardB));
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(12px);
+      animation: cardIn .38s ease both;
+    }
+
+    .cardTop{
+      padding:18px 18px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .qmeta{ display:flex; flex-direction:column; gap:6px; }
+
+    .kicker{
+      color: rgba(255,176,0,.85);
+      font-size:12px;
+      letter-spacing:1.1px;
+      text-transform:uppercase;
+      font-family: Unbounded, Inter, system-ui;
+      font-weight:800;
+    }
+
+    .q{
+      font-size:18px;
+      line-height:1.25;
+      margin:0;
+      font-family: Unbounded, Inter, system-ui;
+      letter-spacing:.3px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.20);
+      color:var(--text);
+      padding:11px 14px;
+      border-radius:16px;
+      cursor:pointer;
+      transition: transform .08s ease, background .2s ease, border .2s ease, box-shadow .2s ease, filter .2s ease;
+      font-weight:900;
+      letter-spacing:.6px;
+      text-transform:uppercase;
+      font-family: Unbounded, Inter, system-ui;
+      font-size:12px;
+      user-select:none;
+    }
+    button:hover{
+      border-color: rgba(255,106,0,.35);
+      box-shadow: 0 16px 55px rgba(0,0,0,.45);
+      filter: brightness(1.03);
+    }
+    button:active{ transform: translateY(1px); }
+    button:disabled{ opacity:.45; cursor:not-allowed; }
+
+    button.primary{
+      background:
+        radial-gradient(18px 18px at 24% 24%, rgba(255,255,255,.24), transparent 65%),
+        linear-gradient(135deg, var(--accent), var(--accent2));
+      border-color: transparent;
+      color: var(--accentInk);
+      box-shadow: var(--glow);
+    }
+
+    button.secondary{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.14);
+      color: rgba(246,242,234,.95);
+    }
+
+    button.danger{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.14);
+      color: rgba(246,242,234,.90);
+    }
+
+    .content{ padding:16px 18px 18px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap:12px;
+    }
+    @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
+
+    .opt{
+      position:relative;
+      padding:14px 14px 14px 14px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(140px 90px at 18% 0%, rgba(255,106,0,.10), transparent 62%),
+        rgba(0,0,0,.18);
+      cursor:pointer;
+      transition: border .2s ease, background .2s ease, transform .08s ease, box-shadow .2s ease;
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      overflow:hidden;
+      isolation:isolate;
+      animation: optIn .35s ease both;
+      animation-delay: var(--d, 0ms);
+    }
+
+    .opt::before{
+      content:"";
+      position:absolute;
+      left:-40%;
+      top:-30%;
+      width:180%;
+      height:140%;
+      background:
+        linear-gradient(
+          120deg,
+          transparent 0%,
+          rgba(255,106,0,.22) 42%,
+          rgba(255,176,0,.38) 50%,
+          rgba(255,106,0,.22) 58%,
+          transparent 100%
+        );
+      transform: translateX(-18%) rotate(6deg);
+      opacity:0;
+      transition: opacity .25s ease, transform .55s ease;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .opt:hover{
+      border-color: rgba(255,106,0,.30);
+      box-shadow: 0 18px 55px rgba(0,0,0,.48);
+    }
+    .opt:hover::before{
+      opacity:.55;
+      transform: translateX(18%) rotate(6deg);
+    }
+    .opt:active{ transform: translateY(1px); }
+
+    .opt .name{
+      font-weight:900;
+      letter-spacing:.2px;
+      z-index:1;
+    }
+
+    .opt.selected{
+      border-color: rgba(255,176,0,.55);
+      background:
+        radial-gradient(160px 110px at 20% 10%, rgba(255,176,0,.16), transparent 62%),
+        rgba(0,0,0,.22);
+      box-shadow: 0 18px 70px rgba(0,0,0,.55);
+    }
+
+    .opt.selected::before{
+      opacity:.85;
+      animation: sweep 1.55s ease-in-out infinite;
+    }
+
+    .opt.selected::after{
+      content:"✓";
+      width:28px; height:28px;
+      display:grid; place-items:center;
+      border-radius:999px;
+      background: rgba(255,176,0,.16);
+      border:1px solid rgba(255,176,0,.45);
+      color: rgba(246,242,234,.95);
+      font-weight:900;
+      box-shadow: var(--glow);
+      z-index:1;
+    }
+
+    @keyframes sweep{
+      0%   { transform: translateX(-20%) rotate(6deg); }
+      60%  { transform: translateX(18%) rotate(6deg); }
+      100% { transform: translateX(18%) rotate(6deg); }
+    }
+
+    .footerRow{
+      margin-top:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-size:13px;
+      flex-wrap:wrap;
+    }
+
+    .notice{
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(240px 150px at 16% 0%, rgba(255,106,0,.12), transparent 62%),
+        rgba(0,0,0,.20);
+      border-radius:18px;
+      padding:14px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+
+    .big{
+      font-family: Unbounded, Inter, system-ui;
+      font-size:18px;
+      font-weight:900;
+      color:var(--text);
+      margin:0 0 8px 0;
+      text-transform:uppercase;
+      letter-spacing:.9px;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(10px) scale(.99); filter: blur(2px); }
+      to   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+    @keyframes optIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .card, .opt{ animation:none !important; }
+      .opt.selected::before{ animation:none !important; }
+    }
+  </style>
+</head>
+
+<body data-theme="metal">
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo"></div>
+        <div class="title">
+          <h1>School Slay 2026</h1>
+          <p>18 номинаций. Выбирай по одному варианту в каждой. Результаты видит только владелец.</p>
+        </div>
+      </div>
+
+      <div class="topRight">
+        <div class="chip" id="themeBtn" title="Сменить тему">THEME: METAL</div>
+        <div class="pill">
+          <span id="progressText">0 / 18</span>
+          <div class="bar"><div id="progressBar"></div></div>
+        </div>
+      </div>
+    </header>
+
+    <main id="app" class="card"></main>
+  </div>
+
+  <script>
+    const API_BASE = "";
+
+    const CATEGORIES = [
+      "Харизма года","Гений года","Парта года","Ученик года","Списывальщик года",
+      "Талант года","Предмет года","Патриот года","Поездка года","Слэнг года","Легенда года",
+      "Вайб года (человек, который создал вайб в нашем классе)",
+      "Стиль года (кто одевался стильно весь год)","Мотиватор года","Лучшая отговорка года",
+      "Событие/мем года (илья вернулся, говно на колёсиках, кастом, кисонька мурлысонька, нажралась в стельку, девочки съебали с физры, мальчики съебали, полина бросила бичу)",
+      "Актив года (самый активный в классе)"
+    ];
+
+    const PEOPLE = [
+      "Аржанова Анфиса","Сигачёва Лера","Лифанова Ариша","Свешникова Настя","Политаева Ксюша",
+      "Подольскова Даша","Проценко Юля","Медведева Варя","Калёнова Аня","Мельникова Вероника",
+      "Власова Ариша","Савинова Даша","Саламайкина Лера","Всехвальнова Полина","Лазюк Наташа",
+      "Михайлова Ксюша","Какуркин Артур","Рахманов Теймур","Романов Павел","Иванов Денис",
+      "Нагорнов Коля","Прибылов Федор","Никишин Саша","Пигалев Кирилл","Гришин Артем",
+      "Шеренков Андрей","Мегреладзе Илья"
+    ];
+
+    const NON_PEOPLE_OPTIONS = {
+      "Парта года": ["1 парта (первый ряд)","2 парта (первый ряд)","3 парта (первый ряд)","4 парта (второй ряд)","5 парта (второй ряд)","6 парта (третий ряд)","Своя версия"],
+      "Предмет года": ["Математика","Русский","Литература","Английский","История","Обществознание","Биология","Химия","Физика","География","Информатика","Физкультура","ОБЖ"],
+      "Поездка года": ["Экскурсия/музей","Кино/ТЦ","Поездка с классом","Олимпиада/соревнования","Прогулка после школы","Другое"],
+      "Слэнг года": ["Слей","Кринж","Имба","Лютый/люто","Жиза","Плюс вайб","Свой вариант"],
+      "Лучшая отговорка года": ["Я забыл(а)","Интернет не работал","Меня не было","Это не задавали","Я сделал(а), но не сохранилось/не распечаталось","Свой вариант"],
+      "Событие/мем года (илья вернулся, говно на колёсиках, кастом, кисонька мурлысонька, нажралась в стельку, девочки съебали с физры, мальчики съебали, полина бросила бичу)": [
+        "Илья вернулся","Говно на колёсиках","Кастом","Кисонька мурлысонька","Нажралась в стельку",
+        "Девочки съебали с физры","Мальчики съебали","Полина бросила бичу","Другое"
+      ]
+    };
+
+    function optionsForCategory(cat){
+      if (NON_PEOPLE_OPTIONS[cat]) return NON_PEOPLE_OPTIONS[cat];
+      return PEOPLE;
+    }
+
+    const STORAGE_KEY = "class-awards-vote-v2";
+    const VOTED_KEY   = "class-awards-voted-v2";
+
+    let state = { step: 0, answers: {} };
+
+    try{
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if(saved && typeof saved === "object") state = { ...state, ...saved };
+    }catch(e){}
+
+    const app = document.getElementById("app");
+    const progressText = document.getElementById("progressText");
+    const progressBar = document.getElementById("progressBar");
+
+    function answeredCount(){ return Object.keys(state.answers).length; }
+
+    function updateProgress(){
+      const total = CATEGORIES.length;
+      const done = answeredCount();
+      progressText.textContent = `${Math.min(done,total)} / ${total}`;
+      progressBar.style.width = `${total ? (done/total)*100 : 0}%`;
+    }
+
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+    function resetAll(){
+      state = { step: 0, answers: {} };
+      save(); render();
+    }
+
+    function goStep(n){
+      state.step = Math.max(0, Math.min(n, CATEGORIES.length));
+      save(); render();
+    }
+
+    function selectOption(catIndex, optText){
+      state.answers[String(catIndex)] = optText;
+      if(state.step < CATEGORIES.length-1) state.step++;
+      save(); render();
+    }
+
+    async function submitVotes(){
+      const votes = CATEGORIES.map((cat, i) => ({
+        category: cat,
+        choice: state.answers[String(i)] || null
+      }));
+
+      const missing = votes.filter(v => !v.choice).map(v => v.category);
+      if(missing.length){
+        alert("Заполни все номинации! Не выбрано:\n— " + missing.join("\n— "));
+        return;
+      }
+
+      try{
+        const res = await fetch(API_BASE + "/api/vote", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({ votes })
+        });
+
+        if(!res.ok){
+          const msg = await res.text().catch(()=> "");
+          alert("Сервер не принял голос:\n" + (msg || ("HTTP " + res.status)));
+          return;
+        }
+
+        localStorage.setItem(VOTED_KEY, "1");
+        localStorage.removeItem(STORAGE_KEY);
+
+        state = { step: CATEGORIES.length, answers: {} };
+        renderThanks();
+      }catch(err){
+        alert("Не получилось отправить голос:\n" + (err?.message || err));
+      }
+    }
+
+    function renderQuestion(){
+      const total = CATEGORIES.length;
+      const i = state.step;
+      const cat = CATEGORIES[i];
+      const opts = optionsForCategory(cat);
+      const selected = state.answers[String(i)];
+
+      app.innerHTML = `
+        <div class="cardTop">
+          <div class="qmeta">
+            <div class="kicker">Номинация ${i+1} из ${total}</div>
+            <p class="q">${escapeHtml(cat)}</p>
+          </div>
+          <div class="actions">
+            <button class="danger" id="resetBtn" type="button">Сброс</button>
+            <button class="secondary" id="backBtn" type="button" ${i===0 ? "disabled":""}>Назад</button>
+            <button class="primary" id="nextBtn" type="button">Дальше</button>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="grid">
+            ${opts.map(o => `
+              <div class="opt ${selected===o ? "selected":""}" data-opt="${escapeAttr(o)}">
+                <div class="name">${escapeHtml(o)}</div>
+                <div class="tag">${selected===o ? "выбрано" : ""}</div>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="footerRow">
+            <span>Выбери 1 вариант.</span>
+            <span>Сохранение: автоматически.</span>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("resetBtn").onclick = resetAll;
+      document.getElementById("backBtn").onclick = () => goStep(i-1);
+      document.getElementById("nextBtn").onclick = () => goStep(i+1);
+
+      app.querySelectorAll(".opt").forEach((el, idx) => {
+        el.style.setProperty("--d", (idx * 35) + "ms");
+        el.addEventListener("click", () => selectOption(i, el.getAttribute("data-opt")));
+      });
+    }
+
+    function renderSubmit(){
+      const total = CATEGORIES.length;
+      const done = answeredCount();
+
+      app.innerHTML = `
+        <div class="cardTop">
+          <div class="qmeta">
+            <div class="kicker">Финиш</div>
+            <p class="q">Отправить голосование</p>
+          </div>
+          <div class="actions">
+            <button class="danger" id="resetBtn" type="button">Сброс</button>
+            <button class="secondary" id="backBtn" type="button">Назад</button>
+            <button class="primary" id="sendBtn" type="button">Отправить</button>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="notice">
+            <p class="big">Почти готово!</p>
+            <p>Выбрано: <b>${done}</b> из <b>${total}</b>.</p>
+            <p style="margin:10px 0 0 0">После отправки ты увидишь только “Спасибо”.</p>
+          </div>
+
+          <div class="footerRow">
+            <span>Если пропустил(а) — нажми “Назад”.</span>
+            <span>Админка: /admin</span>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("resetBtn").onclick = resetAll;
+      document.getElementById("backBtn").onclick = () => goStep(total-1);
+      document.getElementById("sendBtn").onclick = submitVotes;
+    }
+
+    function renderThanks(){
+      app.innerHTML = `
+        <div class="cardTop">
+          <div class="qmeta">
+            <div class="kicker">Голос принят</div>
+            <p class="q">Спасибо! ✅</p>
+          </div>
+          <div class="actions">
+            <button class="secondary" id="testResetBtn" type="button" title="Только для теста на твоём компе">Сброс (тест)</button>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="notice">
+            <p class="big">Голос учтён</p>
+            <p>Повторно голосовать нельзя. Можно закрыть страницу.</p>
+          </div>
+          <div class="footerRow">
+            <span>Админка: /admin</span>
+            <span></span>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("testResetBtn").onclick = () => {
+        localStorage.removeItem(VOTED_KEY);
+        localStorage.removeItem(STORAGE_KEY);
+        resetAll();
+      };
+    }
+
+    function render(){
+      if (localStorage.getItem(VOTED_KEY) === "1") {
+        updateProgress();
+        renderThanks();
+        return;
+      }
+
+      updateProgress();
+      if(state.step < CATEGORIES.length) renderQuestion();
+      else renderSubmit();
+      updateProgress();
+    }
+
+    // theme toggle
+    const themeBtn = document.getElementById("themeBtn");
+    const THEME_KEY = "school-slay-theme";
+    function applyTheme(t){
+      document.body.setAttribute("data-theme", t);
+      themeBtn.textContent = "THEME: " + (t === "gold" ? "GOLD" : "METAL");
+      localStorage.setItem(THEME_KEY, t);
+    }
+    themeBtn.addEventListener("click", () => {
+      const cur = document.body.getAttribute("data-theme") || "metal";
+      applyTheme(cur === "metal" ? "gold" : "metal");
+    });
+    applyTheme(localStorage.getItem(THEME_KEY) || "metal");
+
+    function escapeHtml(s){
+      return String(s)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+    function escapeAttr(s){
+      return escapeHtml(s).replaceAll("\n"," ");
+    }
+
+    render();
+  </script>
+</body>
+</html>
