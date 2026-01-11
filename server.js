@@ -13,7 +13,23 @@ const ADMIN_PASS = process.env.ADMIN_PASS || "change-me-strong-pass";
 const SESSION_SECRET = process.env.SESSION_SECRET || "change-me-session-secret";
 // ============================================
 
-const DATA_FILE = path.join(process.cwd(), "votes.json");
+const DATA_FILE = (process.env.RESET_VOTES_ON_START === "1");if (process.env.RESET_VOTES_ON_START === "1") {
+  try {
+    fs.writeFileSync(DATA_FILE, "[]", "utf8");
+    console.log("Votes reset on start");
+  } catch (e) {
+    console.log("No votes to reset");
+  }
+}
+ {
+  try {
+    fs.writeFileSync(DATA_FILE, "[]", "utf8");
+    console.log("Votes reset on start");
+  } catch (e) {
+    console.log("No votes to reset");
+  }
+}
+ path.join(process.cwd(), "votes.json");
 
 app.use(express.json({ limit: "256kb" }));
 app.use(cookieParser());
@@ -93,7 +109,6 @@ app.post("/api/admin/login", (req, res) => {
 });
 
 // Выход
-// Выход
 app.post("/api/admin/logout", (req, res) => {
   const token = req.cookies?.admin_session;
   if (token) sessions.delete(hashToken(token));
@@ -101,7 +116,22 @@ app.post("/api/admin/logout", (req, res) => {
   res.json({ ok: true });
 });
 
-// Результаты (только владелец)
+// Сброс голосов (только владелец + пароль)
+app.post("/api/admin/reset", requireAdmin, (req, res) => {
+  const { password } = req.body || {};
+
+  if (password !== ADMIN_PASS) {
+    return res.status(403).json({ error: "wrong_password" });
+  }
+
+  try {
+    fs.writeFileSync(DATA_FILE, "[]", "utf8");
+    return res.json({ ok: true });
+  } catch (e) {
+    return res.status(500).json({ error: "reset_failed" });
+  }
+});
+
 // Результаты (только владелец)
 app.get("/api/admin/results", requireAdmin, (req, res) => {
   const all = loadVotes();
@@ -109,15 +139,19 @@ app.get("/api/admin/results", requireAdmin, (req, res) => {
 
   for (const entry of all) {
     for (const v of entry.votes) {
+      if (v.category === "Учитель года") continue;
       agg[v.category] ??= {};
       agg[v.category][v.choice] = (agg[v.category][v.choice] || 0) + 1;
     }
   }
 
-  res.json({ total_ballots: all.length, results: agg });
+  res.json({
+    total_ballots: all.length,
+    total_categories: 17,
+    results: agg
+  });
 });
-
-// Админка (страница)
+ // Админка (страница)
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(process.cwd(), "admin.html"));
 });

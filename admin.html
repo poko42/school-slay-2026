@@ -231,6 +231,20 @@
 </head>
 
 <body>
+<div id="adminActions" style="margin:20px 0; display:none;">
+  <button id="resetVotesBtn" style="
+    padding:12px 20px;
+    font-size:16px;
+    background:#c0392b;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+  ">
+    Сбросить голоса
+  </button>
+</div>
+
 <div class="wrap">
   <header>
     <div class="brand">
@@ -424,6 +438,32 @@
       // не залогинен — остаёмся на логине
     }
   })();
+</script>
+<script>
+  const resetBtn = document.getElementById("resetVotesBtn");
+  const actions = document.getElementById("adminActions");
+
+  // показываем кнопку (админ уже вошёл)
+  actions.style.display = "block";
+
+  resetBtn.onclick = async () => {
+    const password = prompt("Введите пароль администратора");
+    if (!password) return;
+
+    const res = await fetch("/api/admin/reset", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password })
+    });
+
+    if (!res.ok) {
+      alert("Ошибка. Неверный пароль или сбой.");
+      return;
+    }
+
+    alert("Голоса сброшены");
+    location.reload();
+  };
 </script>
 </body>
 </html>
