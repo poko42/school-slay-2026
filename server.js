@@ -46,8 +46,12 @@ function loadVotes() {
 }
 
 function saveVotes(items) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(items, null, 2), "utf8");
-}
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(items, null, 2), "utf8");
+  } catch (e) {
+    console.error("saveVotes failed:", e);
+    throw e;
+  }
 
 function newSessionToken() {
   return crypto.randomBytes(24).toString("hex");
@@ -68,7 +72,21 @@ function requireAdmin(req, res, next) {
 }
 
 // Приём голосов
-app.post("/api/vote", (req, res) => {
+app.post("  try {
+    const all = loadVotes();
+    all.push({
+      id: crypto.randomUUID(),
+      created_at: new Date().toISOString(),
+      votes
+    });
+    saveVotes(all);
+    return res.json({ ok: true });
+  } catch (e) {
+    console.error("vote failed:", e);
+    return res.status(500).json({ error: "server_write_failed" });
+  }
+});
+", (req, res) => {
   const votes = req.body?.votes;
   if (!Array.isArray(votes) || votes.length === 0) {
     return res.status(400).send("Bad payload");
